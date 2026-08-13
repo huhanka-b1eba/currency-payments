@@ -69,10 +69,49 @@ export class PaymentsComponent {
   });
 
   // Удаление транзакции
-  handleDelete = (id: string) => {
+  handleDelete (id: string) {
     this.payments.update(payments =>
       payments.filter(payment => payment.id !== id)
     );
   }
 
+  // Статистика
+  paymentsCount = computed(() => this.filteredPayments().length);
+  usdAll = computed(() =>
+    this.filteredPayments()
+      .filter(payment => payment.currency === 'USD')
+      .reduce((acc, payment) => acc + payment.amount, 0));
+  eurAll = computed(() =>
+    this.filteredPayments()
+      .filter(payment => payment.currency === 'EUR')
+      .reduce((acc, payment) => acc + payment.amount, 0));
+  gbpAll = computed(() =>
+    this.filteredPayments()
+      .filter(payment => payment.currency === 'GBP')
+      .reduce((acc, payment) => acc + payment.amount, 0));
+  completedCount = computed(() =>
+    this.filteredPayments()
+      .filter(payment => payment.status === 'completed').length);
+  pendingCount = computed(() =>
+    this.filteredPayments()
+      .filter(payment => payment.status === 'pending').length);
+  failedCount = computed(() =>
+    this.filteredPayments()
+      .filter(payment => payment.status === 'failed').length);
+
+
+  // Откат фильтров
+  resetFilters(){
+    this.statusFilter.set('all');
+    this.currencyFilter.set('all');
+  }
+
+
 }
+
+
+
+
+
+
+

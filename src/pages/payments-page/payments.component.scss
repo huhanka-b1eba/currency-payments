@@ -1,27 +1,51 @@
 :host {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  width: fit-content;
+  margin: 24px auto;
+}
+
+.payment-static {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  padding: 12px 16px;
+  background: rgb(255 255 255 / 6%);
 }
 
 .payment-buttons,
 .currency-buttons {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 8px;
 }
 
 .payment-button,
-.currency-button{
+.currency-button {
   border: none;
   border-radius: 4px;
   background: var(--light-color);
   color: var(--background-color);
   padding: 8px 16px;
   cursor: pointer;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.payment-button:hover,
+.currency-button:hover {
+  opacity: 0.85;
+}
+
+.payment-button:active,
+.currency-button:active {
+  transform: translateY(1px);
 }
 
 .payment-button_active,
-.currency-button_active{
+.currency-button_active {
   background: #8fd3ff;
+  font-weight: 700;
 }

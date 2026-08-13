@@ -1,3 +1,15 @@
+<div class="payment-static">
+  <span>Payments: {{ paymentsCount() }}</span>
+  <span>
+    USD: {{ usdAll() }}
+    EUR: {{ eurAll() }}
+    GBP: {{ gbpAll() }}
+  </span>
+  Completed: {{ completedCount() }}
+  Pending: {{ pendingCount() }}
+  Failed: {{ failedCount() }}
+</div>
+
 <div class="payment-buttons">
   <button
     class="payment-button"
@@ -59,6 +71,11 @@
     GBP
   </button>
 </div>
+
+<button
+  class="reset-button"
+  (click)="resetFilters()"
+>Reset Filters</button>
 
 @for (payment of filteredPayments(); track payment.id) {
   <app-payment-card
