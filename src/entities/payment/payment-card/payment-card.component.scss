@@ -1,0 +1,23 @@
+.payment-card {
+  display: flex;
+  align-items: center;
+  width: 600px;
+  justify-content: space-between;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  padding: 8px 20px;
+}
+
+.payment-card__status {
+  border: 2px solid var(--border-color);
+  padding: 3px 6px;
+  border-radius: 3px;
+  text-transform: capitalize;
+}
+
+.payment-card__delete {
+  padding: 10px 20px;
+  background-color: var(--color-danger);
+  border: none;
+  cursor: pointer;
+}

@@ -1,0 +1,13 @@
+:root {
+  --border-color: #ccc;
+  --background-color: #000;
+  --light-color: #fff;
+  --color-danger: #f00;
+}
+
+body {
+  background: var(--background-color);
+  color: var(--light-color);
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}

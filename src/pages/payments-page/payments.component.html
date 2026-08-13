@@ -1,0 +1,68 @@
+<div class="payment-buttons">
+  <button
+    class="payment-button"
+    [class.payment-button_active]="statusFilter() === 'all'"
+    (click)="statusFilter.set('all')"
+  >
+    All
+  </button>
+  <button
+    class="payment-button"
+    [class.payment-button_active]="statusFilter() === 'completed'"
+    (click)="statusFilter.set('completed')"
+  >
+    Completed
+  </button>
+  <button
+    class="payment-button"
+    [class.payment-button_active]="statusFilter() === 'pending'"
+    (click)="statusFilter.set('pending')"
+  >
+    Pending
+  </button>
+  <button
+    class="payment-button"
+    [class.payment-button_active]="statusFilter() === 'failed'"
+    (click)="statusFilter.set('failed')"
+  >
+    Failed
+  </button>
+</div>
+
+<div class="currency-buttons">
+  <button
+    class="currency-button"
+    [class.currency-button_active]="currencyFilter() === 'all'"
+    (click)="currencyFilter.set('all')"
+  >
+    All
+  </button>
+  <button
+    class="currency-button"
+    [class.currency-button_active]="currencyFilter() === 'USD'"
+    (click)="currencyFilter.set('USD')"
+  >
+    USD
+  </button>
+  <button
+    class="currency-button"
+    [class.currency-button_active]="currencyFilter() === 'EUR'"
+    (click)="currencyFilter.set('EUR')"
+  >
+    EUR
+  </button>
+  <button
+    class="currency-button"
+    [class.currency-button_active]="currencyFilter() === 'GBP'"
+    (click)="currencyFilter.set('GBP')"
+  >
+    GBP
+  </button>
+</div>
+
+@for (payment of filteredPayments(); track payment.id) {
+  <app-payment-card
+    [payment]="payment"
+    (deleted)="handleDelete($event)"
+  />
+}

@@ -1,0 +1,11 @@
+<div class="payment-card">
+  <h3 class="payment-card__recipient">{{ payment().recipient }}</h3>
+  <p class="payment-card__amount">{{ payment().amount }} {{ payment().currency }}</p>
+  <span class="payment-card__status">{{ payment().status }}</span>
+  <button
+    class="payment-card__delete"
+    (click)="deletePayment()"
+  >
+    Удалить
+  </button>
+</div>
