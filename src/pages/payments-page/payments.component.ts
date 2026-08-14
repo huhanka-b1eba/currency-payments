@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {PaymentCardComponent} from '../../entities/payment/payment-card/payment-card.component';
 import {PaymentService} from '../../entities/payment/model/payment.service';
 
@@ -10,12 +10,15 @@ import {PaymentService} from '../../entities/payment/model/payment.service';
   templateUrl: './payments.component.html',
   styleUrl: './payments.component.scss',
 })
-export class PaymentsComponent {
+export class PaymentsComponent implements OnInit  {
   private paymentService = inject(PaymentService);
 
-  payments = this.paymentService.getPayments();
-  statusFilter = this.paymentService.getStatusFilter();
-  currencyFilter = this.paymentService.getCurrencyFilter();
+  ngOnInit() {
+    this.paymentService.loadPayments();
+  }
+
+  statusFilter = this.paymentService.statusFilter;
+  currencyFilter = this.paymentService.currencyFilter;
 
   filteredPayments = this.paymentService.filteredPayments;
   paymentsCount = this.paymentService.paymentsCount;
