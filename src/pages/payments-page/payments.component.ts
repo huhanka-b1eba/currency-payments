@@ -1,6 +1,6 @@
-import {Component, computed, signal} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {PaymentCardComponent} from '../../entities/payment/payment-card/payment-card.component';
-import {Payment} from '../../entities/payment/model/payment.model';
+import {PaymentService} from '../../entities/payment/model/payment.service';
 
 @Component({
   selector: 'app-payments-page',
@@ -11,103 +11,35 @@ import {Payment} from '../../entities/payment/model/payment.model';
   styleUrl: './payments.component.scss',
 })
 export class PaymentsComponent {
-  payments = signal<Payment[]>([
-    {
-      id: '1',
-      recipient: 'John Smith',
-      amount: 1200,
-      currency: 'USD',
-      status: 'completed',
-    },
-    {
-      id: '2',
-      recipient: 'Anna Müller',
-      amount: 850,
-      currency: 'EUR',
-      status: 'pending',
-    },
-    {
-      id: '3',
-      recipient: 'Oliver Brown',
-      amount: 2400,
-      currency: 'GBP',
-      status: 'completed',
-    },
-    {
-      id: '4',
-      recipient: 'Emma Wilson',
-      amount: 560,
-      currency: 'USD',
-      status: 'failed',
-    },
-    {
-      id: '5',
-      recipient: 'Lukas Schneider',
-      amount: 1750,
-      currency: 'EUR',
-      status: 'pending',
-    },
-  ]);
+  private paymentService = inject(PaymentService);
 
-  // Фильтрация транзакций
-  statusFilter = signal<'all' | Payment['status']>('all');
-  currencyFilter = signal<'all' | Payment['currency']>('all');
+  payments = this.paymentService.getPayments();
+  statusFilter = this.paymentService.getStatusFilter();
+  currencyFilter = this.paymentService.getCurrencyFilter();
 
-  filteredPayments = computed(() => {
-    const status = this.statusFilter();
-    const currency = this.currencyFilter();
+  filteredPayments = this.paymentService.filteredPayments;
+  paymentsCount = this.paymentService.paymentsCount;
+  usdAll = this.paymentService.usdAll;
+  eurAll = this.paymentService.eurAll;
+  gbpAll = this.paymentService.gbpAll;
+  completedCount = this.paymentService.completedCount;
+  pendingCount = this.paymentService.pendingCount;
+  failedCount = this.paymentService.failedCount;
 
-    return this.payments().filter(payment => {
-      const matchesStatus =
-        status === 'all' || payment.status === status;
-
-      const matchCurrency =
-        currency === 'all' || payment.currency === currency;
-
-      return matchesStatus && matchCurrency;
-    });
-  });
-
-  // Удаление транзакции
-  handleDelete (id: string) {
-    this.payments.update(payments =>
-      payments.filter(payment => payment.id !== id)
-    );
+  handleDelete(id: string) {
+    return this.paymentService.deletePayment(id);
   }
 
-  // Статистика
-  paymentsCount = computed(() => this.filteredPayments().length);
-  usdAll = computed(() =>
-    this.filteredPayments()
-      .filter(payment => payment.currency === 'USD')
-      .reduce((acc, payment) => acc + payment.amount, 0));
-  eurAll = computed(() =>
-    this.filteredPayments()
-      .filter(payment => payment.currency === 'EUR')
-      .reduce((acc, payment) => acc + payment.amount, 0));
-  gbpAll = computed(() =>
-    this.filteredPayments()
-      .filter(payment => payment.currency === 'GBP')
-      .reduce((acc, payment) => acc + payment.amount, 0));
-  completedCount = computed(() =>
-    this.filteredPayments()
-      .filter(payment => payment.status === 'completed').length);
-  pendingCount = computed(() =>
-    this.filteredPayments()
-      .filter(payment => payment.status === 'pending').length);
-  failedCount = computed(() =>
-    this.filteredPayments()
-      .filter(payment => payment.status === 'failed').length);
-
-
-  // Откат фильтров
-  resetFilters(){
-    this.statusFilter.set('all');
-    this.currencyFilter.set('all');
+  resetFilters() {
+    this.paymentService.resetFilters();
   }
-
 
 }
+
+
+
+
+
 
 
 

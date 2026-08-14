@@ -12,6 +12,12 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss",
+          "skipTests": true,
+          "type": "component"
+        },
+        "@schematics/angular:service": {
+          "type": "service",
+          "injectable": true,
           "skipTests": true
         }
       },
