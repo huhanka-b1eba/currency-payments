@@ -1,6 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {PaymentCardComponent} from '../../entities/payment/payment-card/payment-card.component';
 import {PaymentService} from '../../entities/payment/model/payment.service';
+import {Payment} from '../../entities/payment/model/payment.model';
 
 @Component({
   selector: 'app-payments-page',
@@ -16,6 +17,9 @@ export class PaymentsComponent implements OnInit  {
   ngOnInit() {
     this.paymentService.loadPayments();
   }
+
+  loading = this.paymentService.loading;
+  error = this.paymentService.error;
 
   statusFilter = this.paymentService.statusFilter;
   currencyFilter = this.paymentService.currencyFilter;
@@ -35,6 +39,14 @@ export class PaymentsComponent implements OnInit  {
 
   resetFilters() {
     this.paymentService.resetFilters();
+  }
+
+  setStatusFilter(status: 'all' | Payment['status']) {
+    this.paymentService.setStatusFilter(status)
+  }
+
+  setCurrencyFilter(currency: 'all' | Payment['currency']) {
+    this.paymentService.setCurrencyFilter(currency)
   }
 
 }

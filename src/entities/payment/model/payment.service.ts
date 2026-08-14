@@ -1,6 +1,7 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {Payment} from './payment.model';
 import {PaymentApi} from '../api/payment.api';
+import {catchError, EMPTY, finalize, tap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,13 @@ export class PaymentService {
   private readonly paymentApi = inject(PaymentApi);
 
   private readonly _payments = signal<Payment[]>([]);
+
+  // Состояния
+  private readonly _loading = signal<boolean>(false);
+  private readonly _error = signal<string | null>(null);
+
+  readonly loading = this._loading.asReadonly();
+  readonly error = this._error.asReadonly();
 
 
   // Фильтрация транзакций
@@ -21,9 +29,23 @@ export class PaymentService {
   readonly currencyFilter = this._currencyFilter.asReadonly();
 
   loadPayments() {
-    this.paymentApi.getPayments().subscribe(payments => {
-      this._payments.set(payments);
-    })
+    this._loading.set(true);
+    this._error.set(null);
+
+    this.paymentApi.getPayments()
+      .pipe(
+        tap(payments => {
+          this._payments.set(payments);
+        }) ,
+        catchError(() => {
+          this._error.set('Не удалось загрузить платежи');
+          return EMPTY;
+        }),
+        finalize(() => {
+          this._loading.set(false);
+        })
+      )
+      .subscribe();
   }
 
   deletePayment(paymentId: string) {
@@ -94,5 +116,13 @@ export class PaymentService {
   resetFilters(){
     this._statusFilter.set('all');
     this._currencyFilter.set('all');
+  }
+
+  statusFilterSet(status: 'all' | Payment['status']) {
+    return this._statusFilter.set(status);
+  }
+
+  currencyFilterSet(currency: 'all' | Payment['currency']) {
+    return this._currencyFilter.set(currency);
   }
 }
