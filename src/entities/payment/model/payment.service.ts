@@ -1,48 +1,16 @@
-import {computed, Injectable, signal} from '@angular/core';
+import {computed, inject, Injectable, signal} from '@angular/core';
 import {Payment} from './payment.model';
+import {PaymentApi} from '../api/payment.api';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentService {
 
-  private readonly _payments = signal<Payment[]>([
-    {
-      id: '1',
-      recipient: 'John Smith',
-      amount: 1200,
-      currency: 'USD',
-      status: 'completed',
-    },
-    {
-      id: '2',
-      recipient: 'Anna Müller',
-      amount: 850,
-      currency: 'EUR',
-      status: 'pending',
-    },
-    {
-      id: '3',
-      recipient: 'Oliver Brown',
-      amount: 2400,
-      currency: 'GBP',
-      status: 'completed',
-    },
-    {
-      id: '4',
-      recipient: 'Emma Wilson',
-      amount: 560,
-      currency: 'USD',
-      status: 'failed',
-    },
-    {
-      id: '5',
-      recipient: 'Lukas Schneider',
-      amount: 1750,
-      currency: 'EUR',
-      status: 'pending',
-    },
-  ]);
+  private readonly paymentApi = inject(PaymentApi);
+
+  private readonly _payments = signal<Payment[]>([]);
+
 
   // Фильтрация транзакций
   private readonly _statusFilter = signal<'all' | Payment['status']>('all');
@@ -52,19 +20,22 @@ export class PaymentService {
   readonly statusFilter = this._statusFilter.asReadonly();
   readonly currencyFilter = this._currencyFilter.asReadonly();
 
-  getPayments() {
-    return this.payments;
+  loadPayments() {
+    this.paymentApi.getPayments().subscribe(payments => {
+      this._payments.set(payments);
+    })
   }
 
-  getStatusFilter() {
-    return this.statusFilter;
+  deletePayment(paymentId: string) {
+    this.paymentApi.deletePayment(paymentId).subscribe(() => {
+      this._payments.update(payments =>
+        payments.filter(payment => payment.id !== paymentId)
+      )
+    })
   }
 
-  getCurrencyFilter() {
-    return this.currencyFilter;
-  }
 
-  filteredPayments = computed(() => {
+  readonly filteredPayments = computed(() => {
     const status = this._statusFilter();
     const currency = this._currencyFilter();
 
@@ -80,43 +51,36 @@ export class PaymentService {
   });
 
   // Статистика
-  paymentsCount = computed(
+  readonly paymentsCount = computed(
     () => this.filteredPayments().length
   );
 
-  usdAll = computed(() =>
+  readonly usdAll = computed(() =>
     this.filteredPayments()
       .filter(payment => payment.currency === 'USD')
       .reduce((acc, payment) => acc + payment.amount, 0));
 
-  eurAll = computed(() =>
+  readonly eurAll = computed(() =>
     this.filteredPayments()
       .filter(payment => payment.currency === 'EUR')
       .reduce((acc, payment) => acc + payment.amount, 0));
 
-  gbpAll = computed(() =>
+  readonly gbpAll = computed(() =>
     this.filteredPayments()
       .filter(payment => payment.currency === 'GBP')
       .reduce((acc, payment) => acc + payment.amount, 0));
 
-  completedCount = computed(() =>
+  readonly completedCount = computed(() =>
     this.filteredPayments()
       .filter(payment => payment.status === 'completed').length);
 
-  pendingCount = computed(() =>
+  readonly pendingCount = computed(() =>
     this.filteredPayments()
       .filter(payment => payment.status === 'pending').length);
 
-  failedCount = computed(() =>
+  readonly failedCount = computed(() =>
     this.filteredPayments()
       .filter(payment => payment.status === 'failed').length);
-
-  // Удаление транзакции
-  deletePayment (id: string) {
-    this._payments.update(payments =>
-      payments.filter(payment => payment.id !== id)
-    );
-  }
 
   setStatusFilter(status: 'all' | Payment['status']) {
     this._statusFilter.set(status);
