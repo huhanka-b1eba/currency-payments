@@ -1,7 +1,7 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
 import {Payment} from './payment.model';
 import {PaymentApi} from '../api/payment.api';
-import {catchError, EMPTY, finalize, tap} from "rxjs";
+import {catchError, EMPTY, finalize, map, of, switchMap, tap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -125,4 +125,62 @@ export class PaymentService {
   currencyFilterSet(currency: 'all' | Payment['currency']) {
     return this._currencyFilter.set(currency);
   }
+
+  testRxJs() {
+    this.paymentApi.getPayments()
+      .pipe(
+        tap(payments => {
+          console.log(payments);
+        }),
+        map(payments => {
+          return payments
+            .filter(payment => payment.status === 'completed')
+            .sort((a, b) => b.amount - a.amount);
+        }),
+        tap(payments => {
+          console.log(payments);
+        })
+      ).subscribe();
+  }
+
+  testSwitchMap() {
+    of('1', '2', '3')
+      .pipe(
+        switchMap(id => {
+          return this.paymentApi.getPayment(id)
+        })
+      ).subscribe(payment => {
+        console.log(payment);
+    });
+  }
+
+  testSearch() {
+    of('J', 'Jo', 'Joh', 'John')
+      .pipe(
+        tap(searchText => console.log(searchText)),
+        switchMap(searchText => {
+          return this.paymentApi.searchPayments(searchText);
+        })
+      )
+      .subscribe(payments => {
+        console.log(payments);
+      })
+  }
+
+  searchPayments(text: string) {
+    const query = text.trim();
+
+    if (!query) {
+      return this.paymentApi.getPayments();
+    }
+
+    return this.paymentApi.searchPayments(text)
+  }
 }
+
+
+
+
+
+
+

@@ -9,17 +9,25 @@ import {Payment} from '../model/payment.model';
 export class PaymentApi {
   private readonly httpClient = inject(HttpClient);
 
-  private readonly baseUrl = "http://localhost:300/api"
+  private readonly baseUrl = "http://localhost:3000/api"
 
   getPayments() {
     return this.httpClient.get<Payment[]>(`${this.baseUrl}/payments`);
   }
 
   createPayment(payment: Payment) {
-    return this.httpClient.post<Payment>(`${this.baseUrl}/payment`, payment);
+    return this.httpClient.post<Payment>(`${this.baseUrl}/payments`, payment);
   }
 
   deletePayment(paymentId: string) {
     return this.httpClient.delete(`${this.baseUrl}/payments/${paymentId}`);
+  }
+
+  getPayment(paymentId: string) {
+    return this.httpClient.get<Payment>(`${this.baseUrl}/payments/${paymentId}`);
+  }
+
+  searchPayments(query: string) {
+    return this.httpClient.get<Payment[]>(`${this.baseUrl}/payments?recipient=${query}`);
   }
 }

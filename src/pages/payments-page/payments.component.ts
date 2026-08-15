@@ -2,11 +2,14 @@ import {Component, inject, OnInit} from '@angular/core';
 import {PaymentCardComponent} from '../../entities/payment/payment-card/payment-card.component';
 import {PaymentService} from '../../entities/payment/model/payment.service';
 import {Payment} from '../../entities/payment/model/payment.model';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {debounceTime, distinctUntilChanged, switchMap, tap} from 'rxjs';
 
 @Component({
   selector: 'app-payments-page',
   imports: [
-    PaymentCardComponent
+    PaymentCardComponent,
+    ReactiveFormsModule,
   ],
   templateUrl: './payments.component.html',
   styleUrl: './payments.component.scss',
@@ -14,8 +17,28 @@ import {Payment} from '../../entities/payment/model/payment.model';
 export class PaymentsComponent implements OnInit  {
   private paymentService = inject(PaymentService);
 
+  searchControl = new FormControl('', {
+    nonNullable: true,
+  });
+
+
   ngOnInit() {
     this.paymentService.loadPayments();
+
+    this.searchControl.valueChanges
+      .pipe(
+        tap(value => console.log('raw:', value)),
+        debounceTime(300),
+        distinctUntilChanged(),
+        tap(value => console.log('search:', value)),
+        switchMap(searchText => {
+            return this.paymentService.searchPayments(searchText)
+          }
+        )
+      )
+      .subscribe(payments => {
+        console.log(payments);
+      })
   }
 
   loading = this.paymentService.loading;
@@ -48,6 +71,8 @@ export class PaymentsComponent implements OnInit  {
   setCurrencyFilter(currency: 'all' | Payment['currency']) {
     this.paymentService.setCurrencyFilter(currency)
   }
+
+
 
 }
 

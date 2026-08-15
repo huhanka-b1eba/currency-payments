@@ -1,4 +1,7 @@
-<div class="payment-card">
+<a
+  class="payment-card"
+  [routerLink]="['/payments', payment().id]"
+>
   <h3 class="payment-card__recipient">{{ payment().recipient }}</h3>
   <p class="payment-card__amount">{{ payment().amount }} {{ payment().currency }}</p>
   <span class="payment-card__status">{{ payment().status }}</span>
@@ -8,4 +11,4 @@
   >
     Удалить
   </button>
-</div>
+</a>

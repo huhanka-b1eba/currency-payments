@@ -77,6 +77,13 @@
   (click)="resetFilters()"
 >Reset Filters</button>
 
+<input
+  class="search-input"
+  type="text"
+  [formControl]="searchControl"
+  placeholder="Search recipient"
+>
+
 @if (loading()) {
   <p>Loading</p>
 } @else if (error()) {
