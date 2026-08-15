@@ -3,14 +3,18 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
-import {loggingInterceptor} from '../entities/payment/api/interceptors/logging.interceptor';
+import {loggingInterceptor} from '../shared/http/logging.interceptor';
+import {authInterceptor} from '../shared/auth/auth.interceptor';
+import {errorInterceptor} from '../shared/http/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(
       withInterceptors([
-        loggingInterceptor
+        loggingInterceptor,
+        authInterceptor,
+        errorInterceptor
       ])
     ),
     provideRouter(routes)],

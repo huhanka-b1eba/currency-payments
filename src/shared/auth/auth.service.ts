@@ -16,4 +16,8 @@ export class AuthService {
   logout() {
     this._isAuthenticated.set(false);
   }
+
+  getAccessToken() {
+    return 'test-token';
+  }
 }
