@@ -2,11 +2,16 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withInterceptors} from '@angular/common/http';
+import {loggingInterceptor} from '../entities/payment/api/interceptors/logging.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptors([
+        loggingInterceptor
+      ])
+    ),
     provideRouter(routes)],
 };

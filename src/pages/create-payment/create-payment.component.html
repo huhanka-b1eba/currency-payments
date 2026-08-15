@@ -13,6 +13,10 @@
     formControlName="amount"
   >
 
+  <textarea
+    formControlName="description"
+  ></textarea>
+
   <select
     formControlName="currency">
     <option value="USD">USD</option>
@@ -20,9 +24,33 @@
     <option value="GBP">GBP</option>
   </select>
 
+  <div formArrayName="tags">
+    <button
+      class="add-tag"
+      (click)="addTag()"
+      type="button"
+    >+</button>
+
+    @for (control of tags.controls; track $index) {
+      <input [formControlName]="$index">
+
+      <button
+        type="button"
+        (click)="removeTag($index)"
+      >
+        Delete
+      </button>
+    }
+  </div>
+
+  @if (
+    form.controls.description.hasError('hasError') &&
+    form.controls.description.touched
+    ) {
+    <p>Description must be at most 200 characters</p>
+  }
+
   <button type="submit" [disabled]="form.invalid">
     Create
   </button>
 </form>
-
-
