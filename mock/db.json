@@ -1,0 +1,74 @@
+{
+  "payments": [
+    {
+      "id": "1",
+      "recipient": "John Smith",
+      "amount": 1200,
+      "currency": "USD",
+      "status": "completed"
+    },
+    {
+      "id": "2",
+      "recipient": "Anna Muller",
+      "amount": 850,
+      "currency": "EUR",
+      "status": "pending"
+    },
+    {
+      "id": "3",
+      "recipient": "Oliver Brown",
+      "amount": 2400,
+      "currency": "GBP",
+      "status": "completed"
+    },
+    {
+      "id": "4",
+      "recipient": "Emma Wilson",
+      "amount": 560,
+      "currency": "USD",
+      "status": "failed"
+    },
+    {
+      "id": "5",
+      "recipient": "Lukas Schneider",
+      "amount": 1750,
+      "currency": "EUR",
+      "status": "pending"
+    },
+    {
+      "id": "6",
+      "recipient": "Maria Garcia",
+      "amount": 3150,
+      "currency": "USD",
+      "status": "completed"
+    },
+    {
+      "id": "7",
+      "recipient": "Noah Johnson",
+      "amount": 420,
+      "currency": "GBP",
+      "status": "pending"
+    },
+    {
+      "id": "8",
+      "recipient": "Sofia Rossi",
+      "amount": 980,
+      "currency": "EUR",
+      "status": "failed"
+    },
+    {
+      "id": "9",
+      "recipient": "William Taylor",
+      "amount": 2675,
+      "currency": "GBP",
+      "status": "completed"
+    },
+    {
+      "id": "10",
+      "recipient": "Emily Davis",
+      "amount": 1340,
+      "currency": "USD",
+      "status": "pending"
+    }
+  ]
+}

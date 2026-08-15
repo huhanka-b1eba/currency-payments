@@ -176,6 +176,10 @@ export class PaymentService {
 
     return this.paymentApi.searchPayments(text)
   }
+
+  getPayment(paymentId: string) {
+    return this.paymentApi.getPayment(paymentId);
+  }
 }
 
 

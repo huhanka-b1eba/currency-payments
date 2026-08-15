@@ -1,15 +1,17 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {PaymentCardComponent} from '../../entities/payment/payment-card/payment-card.component';
 import {PaymentService} from '../../entities/payment/model/payment.service';
 import {Payment} from '../../entities/payment/model/payment.model';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {debounceTime, distinctUntilChanged, switchMap, tap} from 'rxjs';
+import {PaymentCardComponent} from '../../entities/payment/payment-card/payment-card.component';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-payments-page',
   imports: [
-    PaymentCardComponent,
     ReactiveFormsModule,
+    PaymentCardComponent,
+    RouterLink
   ],
   templateUrl: './payments.component.html',
   styleUrl: './payments.component.scss',
