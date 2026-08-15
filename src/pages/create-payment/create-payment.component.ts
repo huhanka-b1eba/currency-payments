@@ -1,6 +1,7 @@
-import {Component, signal} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {switchMap, tap} from 'rxjs';
+import {PaymentService} from '../../entities/payment/model/payment.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-payment',
@@ -12,8 +13,12 @@ import {switchMap, tap} from 'rxjs';
 })
 export class CreatePaymentComponent {
 
-  form = new FormGroup({
+  private readonly paymentService = inject(PaymentService);
+  private readonly router = inject(Router)
+
+  readonly form = new FormGroup({
     recipient: new FormControl('', {
+      nonNullable: true,
       validators: [
         Validators.required,
         Validators.minLength(2),
@@ -40,7 +45,17 @@ export class CreatePaymentComponent {
       return;
     }
 
-    console.log(this.form.getRawValue());
+  const dto = this.form.getRawValue()
+
+  this.paymentService.createPayment(dto).subscribe({
+    next: () => {
+      this.router.navigate(['/payments']);
+    },
+    error: err => {
+      alert(err);
+    }
+  });
+
   }
 
 }

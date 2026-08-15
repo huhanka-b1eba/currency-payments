@@ -1,5 +1,5 @@
 import {computed, inject, Injectable, signal} from '@angular/core';
-import {Payment} from './payment.model';
+import {CreatePaymentDto, Payment} from './payment.model';
 import {PaymentApi} from '../api/payment.api';
 import {catchError, EMPTY, finalize, map, of, switchMap, tap} from "rxjs";
 
@@ -118,14 +118,6 @@ export class PaymentService {
     this._currencyFilter.set('all');
   }
 
-  statusFilterSet(status: 'all' | Payment['status']) {
-    return this._statusFilter.set(status);
-  }
-
-  currencyFilterSet(currency: 'all' | Payment['currency']) {
-    return this._currencyFilter.set(currency);
-  }
-
   testRxJs() {
     this.paymentApi.getPayments()
       .pipe(
@@ -179,6 +171,16 @@ export class PaymentService {
 
   getPayment(paymentId: string) {
     return this.paymentApi.getPayment(paymentId);
+  }
+
+  createPayment(dto: CreatePaymentDto) {
+    const payment: Payment = {
+      id: crypto.randomUUID(),
+      ...dto,
+      status: 'pending',
+    }
+
+    return this.paymentApi.createPayment(payment);
   }
 }
 
