@@ -1,1 +1,28 @@
-<p>create-payment works!</p>
+<form
+  [formGroup]="form"
+  (submit)="submit()"
+>
+  <input
+    type="text"
+    formControlName="recipient"
+    placeholder="Recipient"
+  >
+
+  <input
+    type="number"
+    formControlName="amount"
+  >
+
+  <select
+    formControlName="currency">
+    <option value="USD">USD</option>
+    <option value="EUR">EUR</option>
+    <option value="GBP">GBP</option>
+  </select>
+
+  <button type="submit" [disabled]="form.invalid">
+    Create
+  </button>
+</form>
+
+

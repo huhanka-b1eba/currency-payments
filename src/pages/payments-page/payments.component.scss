@@ -1,31 +1,31 @@
 :host {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
   width: min(100% - 32px, 860px);
-  margin: 32px auto;
+  margin: 16px auto 32px;
 }
 
 .payment-static {
   display: grid;
   grid-template-columns: repeat(5, minmax(120px, 1fr));
   gap: 10px;
-  border: 1px solid rgb(255 255 255 / 14%);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 16px;
-  background: #111827;
-  box-shadow: 0 16px 40px rgb(0 0 0 / 24%);
+  background: var(--panel-color);
+  box-shadow: 0 18px 42px rgb(15 23 42 / 10%);
   line-height: 1.35;
 }
 
 .payment-static span,
 .payment-static {
-  color: #e5e7eb;
+  color: var(--muted-color);
   font-size: 14px;
 }
 
 .payment-static span:first-child {
-  color: #ffffff;
+  color: var(--text-color);
   font-size: 18px;
   font-weight: 700;
 }
@@ -40,10 +40,10 @@
 .payment-button,
 .currency-button {
   min-height: 38px;
-  border: 1px solid rgb(255 255 255 / 16%);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
-  background: #1f2937;
-  color: #f9fafb;
+  background: #ffffff;
+  color: var(--text-color);
   padding: 8px 14px;
   font: inherit;
   font-weight: 600;
@@ -57,8 +57,8 @@
 
 .payment-button:hover,
 .currency-button:hover {
-  border-color: #38bdf8;
-  background: #263244;
+  border-color: var(--accent-color);
+  background: #eff6ff;
 }
 
 .payment-button:active,
@@ -68,19 +68,19 @@
 
 .payment-button_active,
 .currency-button_active {
-  border-color: #38bdf8;
-  background: #38bdf8;
-  color: #07111f;
+  border-color: var(--accent-color);
+  background: var(--accent-color);
+  color: #ffffff;
   font-weight: 700;
 }
 
 .reset-button {
   align-self: flex-start;
   min-height: 38px;
-  border: 1px solid rgb(248 113 113 / 44%);
+  border: 1px solid rgb(220 38 38 / 22%);
   border-radius: 6px;
-  background: rgb(127 29 29 / 72%);
-  color: #fee2e2;
+  background: #fef2f2;
+  color: var(--color-danger);
   padding: 8px 14px;
   font: inherit;
   font-weight: 700;
@@ -92,8 +92,8 @@
 }
 
 .reset-button:hover {
-  border-color: #f87171;
-  background: #991b1b;
+  border-color: var(--color-danger);
+  background: #fee2e2;
 }
 
 .reset-button:active {
@@ -104,10 +104,10 @@
   width: 100%;
   min-height: 44px;
   box-sizing: border-box;
-  border: 1px solid rgb(255 255 255 / 16%);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  background: #0f172a;
-  color: #f9fafb;
+  background: #ffffff;
+  color: var(--text-color);
   padding: 10px 14px;
   font: inherit;
   outline: none;
@@ -118,24 +118,24 @@
 }
 
 .search-input::placeholder {
-  color: #94a3b8;
+  color: var(--muted-color);
 }
 
 .search-input:focus {
-  border-color: #38bdf8;
-  background: #111827;
-  box-shadow: 0 0 0 3px rgb(56 189 248 / 20%);
+  border-color: var(--accent-color);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 16%);
 }
 
 p {
-  margin: 8px 0;
-  color: #cbd5e1;
+  margin: 2px 0;
+  color: var(--muted-color);
 }
 
 @media (max-width: 760px) {
   :host {
     width: min(100% - 24px, 860px);
-    margin: 20px auto;
+    margin: 12px auto 24px;
   }
 
   .payment-static {

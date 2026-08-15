@@ -1,0 +1,25 @@
+:host {
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr auto;
+}
+
+header,
+footer {
+  padding: 18px max(20px, calc((100vw - 960px) / 2));
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+}
+
+header {
+  color: var(--text-color);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+footer {
+  border-top: 1px solid var(--border-color);
+  border-bottom: 0;
+  color: var(--muted-color);
+  font-size: 13px;
+}

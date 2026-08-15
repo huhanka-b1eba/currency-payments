@@ -5,13 +5,13 @@
   width: 100%;
   box-sizing: border-box;
   justify-content: space-between;
-  border: 1px solid rgb(255 255 255 / 12%);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 14px 16px;
-  background: #111827;
-  color: #f9fafb;
+  background: var(--panel-color);
+  color: var(--text-color);
   text-decoration: none;
-  box-shadow: 0 10px 28px rgb(0 0 0 / 18%);
+  box-shadow: 0 12px 30px rgb(15 23 42 / 8%);
   transition:
     border-color 150ms ease,
     background-color 150ms ease,
@@ -19,8 +19,8 @@
 }
 
 .payment-card:hover {
-  border-color: rgb(56 189 248 / 58%);
-  background: #162033;
+  border-color: rgb(37 99 235 / 38%);
+  background: #f8fbff;
   transform: translateY(-1px);
 }
 
@@ -32,25 +32,25 @@
 .payment-card__recipient {
   min-width: 0;
   flex: 1 1 220px;
-  color: #ffffff;
+  color: var(--text-color);
   font-size: 16px;
   font-weight: 700;
 }
 
 .payment-card__amount {
   flex: 0 0 120px;
-  color: #dbeafe;
+  color: var(--accent-color);
   font-weight: 700;
   text-align: right;
 }
 
 .payment-card__status {
   flex: 0 0 92px;
-  border: 1px solid rgb(255 255 255 / 14%);
+  border: 1px solid var(--border-color);
   padding: 5px 8px;
   border-radius: 999px;
-  background: rgb(255 255 255 / 8%);
-  color: #cbd5e1;
+  background: #f8fafc;
+  color: var(--muted-color);
   font-size: 12px;
   font-weight: 700;
   text-align: center;
