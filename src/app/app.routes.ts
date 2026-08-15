@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import {PaymentsComponent} from '../pages/payments-page/payments.component';
 import {PaymentDetailsComponent} from '../pages/payment-details/payment-details.component';
 import {MainLayoutComponent} from './layouts/main-layout/main-layout.component';
+import {authGuard} from '../shared/auth/authGuard';
+import {paymentResolver} from '../entities/payment/model/payment.resolver';
 
 export const routes: Routes = [
   {
@@ -25,10 +27,14 @@ export const routes: Routes = [
             loadComponent: () =>
               import('../pages/create-payment/create-payment.component')
                 .then(m => m.CreatePaymentComponent),
+            canActivate: [authGuard],
           },
           {
             path: ':id',
-            component: PaymentDetailsComponent
+            component: PaymentDetailsComponent,
+            resolve: {
+              payment: paymentResolver
+            }
           }]
       },
     ]
