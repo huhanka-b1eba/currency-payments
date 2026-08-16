@@ -1,10 +1,11 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, computed, DestroyRef, effect, inject, OnInit} from '@angular/core';
 import {PaymentService} from '../../entities/payment/model/payment.service';
 import {Payment} from '../../entities/payment/model/payment.model';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {debounceTime, distinctUntilChanged, switchMap, tap} from 'rxjs';
+import {catchError, debounce, debounceTime, distinctUntilChanged, finalize, of, switchMap, tap, throwError} from 'rxjs';
 import {PaymentCardComponent} from '../../entities/payment/payment-card/payment-card.component';
 import {RouterLink} from '@angular/router';
+import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-payments-page',
@@ -18,6 +19,7 @@ import {RouterLink} from '@angular/router';
 })
 export class PaymentsComponent implements OnInit  {
   private paymentService = inject(PaymentService);
+  private readonly destroyRef = inject(DestroyRef);
 
   searchControl = new FormControl('', {
     nonNullable: true,
@@ -29,17 +31,29 @@ export class PaymentsComponent implements OnInit  {
 
     this.searchControl.valueChanges
       .pipe(
-        tap(value => console.log('raw:', value)),
+        tap(() => {
+          this.paymentService.setLoading(true)
+        }),
         debounceTime(300),
         distinctUntilChanged(),
-        tap(value => console.log('search:', value)),
         switchMap(searchText => {
             return this.paymentService.searchPayments(searchText)
+              .pipe(
+                catchError(() => {
+                  this.paymentService.setPayments([])
+                  this.paymentService.setError("Failed to load payments");
+                  return of([]);
+                }),
+                finalize(() => {
+                  this.paymentService.setLoading(false)
+                })
+              )
           }
-        )
+        ),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(payments => {
-        console.log(payments);
+        this.paymentService.setPayments(payments);
       })
   }
 
@@ -73,10 +87,8 @@ export class PaymentsComponent implements OnInit  {
   setCurrencyFilter(currency: 'all' | Payment['currency']) {
     this.paymentService.setCurrencyFilter(currency)
   }
-
-
-
-}
+  
+  }
 
 
 

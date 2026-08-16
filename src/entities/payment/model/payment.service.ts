@@ -118,6 +118,18 @@ export class PaymentService {
     this._currencyFilter.set('all');
   }
 
+  setPayments(payments: Payment[]) {
+    this._payments.set(payments);
+  }
+
+  setLoading(loading: boolean) {
+    this._loading.set(loading);
+  }
+
+  setError(error: string | null) {
+    this._error.set(error)
+  }
+
   testRxJs() {
     this.paymentApi.getPayments()
       .pipe(
@@ -166,7 +178,7 @@ export class PaymentService {
       return this.paymentApi.getPayments();
     }
 
-    return this.paymentApi.searchPayments(text)
+    return this.paymentApi.searchPayments(query)
   }
 
   getPayment(paymentId: string) {

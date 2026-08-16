@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Payment} from '../model/payment.model';
+import {API_URL} from '../../../shared/config/api-url.token';
 
 
 @Injectable({
@@ -9,7 +10,7 @@ import {Payment} from '../model/payment.model';
 export class PaymentApi {
   private readonly httpClient = inject(HttpClient);
 
-  private readonly baseUrl = "http://localhost:3000/api"
+  private readonly baseUrl = inject(API_URL)
 
   getPayments() {
     return this.httpClient.get<Payment[]>(`${this.baseUrl}/payments`);
@@ -28,6 +29,10 @@ export class PaymentApi {
   }
 
   searchPayments(query: string) {
-    return this.httpClient.get<Payment[]>(`${this.baseUrl}/payments?recipient=${query}`);
+    const recipient = query.trim();
+
+    return this.httpClient.get<Payment[]>(`${this.baseUrl}/payments`, {
+      params: recipient ? {'recipient:contains': recipient} : {},
+    });
   }
 }

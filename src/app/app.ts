@@ -1,6 +1,6 @@
-import { Component, signal } from '@angular/core';
+import {Component, signal} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {PaymentsComponent} from '../pages/payments-page/payments.component';
+
 
 @Component({
   selector: 'app-root',

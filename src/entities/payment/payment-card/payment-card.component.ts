@@ -1,4 +1,4 @@
-import {Component, input, output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input, output} from '@angular/core';
 import {Payment} from '../model/payment.model';
 import {RouterLink} from '@angular/router';
 
@@ -7,6 +7,7 @@ import {RouterLink} from '@angular/router';
   imports: [
     RouterLink
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './payment-card.component.html',
   styleUrl: './payment-card.component.scss',
 })
